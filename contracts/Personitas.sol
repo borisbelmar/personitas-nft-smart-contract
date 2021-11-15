@@ -33,6 +33,7 @@ contract Personitas is ERC721, ERC721Enumerable, Ownable, PersonitasDNA {
     // TODO: Use an oracle like Chainlink for production!
     tokenDNA[current] = deterministicPseudoRandomDNA(current, msg.sender);
 
+    // FIXME: Al parecer no está incrementando como debería
     _idCounter.increment();
     _safeMint(msg.sender, current);
   }
