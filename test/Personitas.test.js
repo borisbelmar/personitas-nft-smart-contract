@@ -71,9 +71,32 @@ describe('Personitas Token URI', () => {
 
     const [,base64JSON] = stringifiedTokenURI.split('data:application/json;base64,');
     const stringifiedMetadata = Buffer.from(base64JSON, 'base64').toString('ascii')
-
+    
     const metadata = JSON.parse(stringifiedMetadata);
 
     expect(metadata).to.have.all.keys('name', 'description', 'image');
+  })
+
+  it('Images and DNA are unique by address and id', async () => {
+    const { deployed } = await setup();
+
+    await Promise.all([
+      deployed.mint({ value: 300000000000000 }),
+      deployed.mint({ value: 300000000000000 })
+    ])
+
+    const [dna0, dna1] = await Promise.all([
+      deployed.tokenDNA(0),
+      deployed.tokenDNA(1)
+    ])
+
+    expect(dna0).to.not.equal(dna1);
+
+    const [image0, image1] = await Promise.all([
+      deployed.imageByDNA(dna0),
+      deployed.imageByDNA(dna1)
+    ])
+
+    expect(image0).to.not.equal(image1);
   })
 })

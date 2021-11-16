@@ -33,9 +33,8 @@ contract Personitas is ERC721, ERC721Enumerable, Ownable, PersonitasDNA {
     // TODO: Use an oracle like Chainlink for production!
     tokenDNA[current] = deterministicPseudoRandomDNA(current, msg.sender);
 
-    // FIXME: Al parecer no está incrementando como debería
-    _idCounter.increment();
     _safeMint(msg.sender, current);
+    _idCounter.increment();
   }
 
   function _baseURI() internal pure override returns (string memory) {
@@ -73,7 +72,7 @@ contract Personitas is ERC721, ERC721Enumerable, Ownable, PersonitasDNA {
     // @dev This is appart avoiding the stak overflow
     return string(abi.encodePacked(
       params,
-      "&topType",
+      "&topType=",
       getTopType(_dna)
     ));
   }

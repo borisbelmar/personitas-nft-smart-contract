@@ -1607,7 +1607,7 @@ contract PersonitasDNA {
 
   function _getDNASection (uint256 _dna, uint8 _rightDiscard) internal pure returns (uint8) {
     return uint8(
-      (_dna % 1 * 10 ** (_rightDiscard + ADN_SECTION_SIZE)) / (1 * 10 ** _rightDiscard)
+      (_dna % (1 * 10 ** (_rightDiscard + ADN_SECTION_SIZE))) / (1 * 10 ** _rightDiscard)
     );
   }
 
@@ -1704,8 +1704,8 @@ contract Personitas is ERC721, ERC721Enumerable, Ownable, PersonitasDNA {
     // TODO: Use an oracle like Chainlink for production!
     tokenDNA[current] = deterministicPseudoRandomDNA(current, msg.sender);
 
-    _idCounter.increment();
     _safeMint(msg.sender, current);
+    _idCounter.increment();
   }
 
   function _baseURI() internal pure override returns (string memory) {
@@ -1743,7 +1743,7 @@ contract Personitas is ERC721, ERC721Enumerable, Ownable, PersonitasDNA {
     // @dev This is appart avoiding the stak overflow
     return string(abi.encodePacked(
       params,
-      "&topType",
+      "&topType=",
       getTopType(_dna)
     ));
   }

@@ -12,7 +12,11 @@ module.exports = {
   networks: {
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${INFURA_PROJECT_ID}`,
+      accounts: [`0x${PRIVATE_KEY}`]
+    },
+    mumbai: {
+      url: "https://rpc-mumbai.maticvigil.com",
       accounts: [PRIVATE_KEY]
-    }
+    },
   }
 };
