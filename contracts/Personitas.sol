@@ -37,6 +37,11 @@ contract Personitas is ERC721, ERC721Enumerable, Ownable, PersonitasDNA {
     _idCounter.increment();
   }
 
+   function getSupplyLeft() public view returns(uint256) {
+    return maxSupply - _idCounter.current();
+  }
+
+
   function _baseURI() internal pure override returns (string memory) {
     return "https://avataaars.io/";
   }

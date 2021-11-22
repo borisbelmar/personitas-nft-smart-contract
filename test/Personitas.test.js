@@ -20,9 +20,11 @@ describe('Personitas NFT Deploy', () => {
 
     const returnedMaxSupply = await deployed.maxSupply();
     const returnedMintingPrice = await deployed.mintingPrice();
+    const currentSupply = await deployed.totalSupply();
 
     expect(returnedMaxSupply).to.equal(maxSupply);
     expect(returnedMintingPrice).to.equal(mintingPrice);
+    expect(currentSupply).to.equal(0);
   })
 })
 
@@ -35,6 +37,22 @@ describe('Personitas NFT Minting', () => {
     const ownerOfMinted = await deployed.ownerOf(0);
     
     expect(ownerOfMinted).to.equal(owner.address);
+  })
+
+  it('Show correct current supply and left supply', async () => {
+    const maxSupply = 100;
+    const { deployed } = await setup({ maxSupply });
+
+    await Promise.all([
+      deployed.mint({ value: 300000000000000 }),
+      deployed.mint({ value: 300000000000000 })
+    ])
+
+    const currentSupply = await deployed.totalSupply();
+    const supplyLeft = await deployed.getSupplyLeft();
+
+    expect(currentSupply).to.equal(2);
+    expect(supplyLeft).to.equal(maxSupply - 2);
   })
 
   it('Has mint limit', async () => {
